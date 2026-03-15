@@ -4,6 +4,7 @@ import ch02 from "./ch02";
 import ch03 from "./ch03";
 import ch04 from "./ch04";
 import ch05 from "./ch05";
+import ch10 from "./ch10";
 
 const obg: Module = {
   id: "obg",
@@ -11,7 +12,7 @@ const obg: Module = {
   shortName: "OBG",
   color: "orange",
   icon: "Baby",
-  chapters: [ch01, ch02, ch03, ch04, ch05],
+  chapters: [ch01, ch02, ch03, ch04, ch05, ch10],
 };
 
 export default obg;
