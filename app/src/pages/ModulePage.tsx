@@ -13,7 +13,7 @@ export function ModulePage() {
   const colors = moduleColors(mod.color);
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-8">
+    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
       <Link
         to="/"
         className="mb-4 inline-flex items-center gap-1 text-sm text-text-secondary transition hover:text-text"
@@ -28,7 +28,7 @@ export function ModulePage() {
         >
           {mod.shortName}
         </span>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight">{mod.name}</h1>
+        <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">{mod.name}</h1>
         <p className="mt-1 text-text-secondary">
           {mod.chapters.length} chapter{mod.chapters.length !== 1 ? "s" : ""}
         </p>

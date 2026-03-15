@@ -44,13 +44,13 @@ export function BlankSentence({
   };
 
   return (
-    <div className="rounded-xl border border-border bg-surface-alt p-5">
-      <p className="text-sm leading-loose">
+    <div className="rounded-xl border border-border bg-surface-alt p-4 sm:p-5">
+      <p className="text-sm leading-loose sm:leading-loose">
         {parts.map((part, i) => (
           <span key={i}>
             {part}
             {i < blanks.length && (
-              <span className="inline-flex items-center gap-1 mx-1">
+              <span className="inline-flex items-center gap-1 mx-0.5 sm:mx-1">
                 <input
                   ref={(el) => { inputRefs.current[i] = el; }}
                   type="text"
@@ -63,7 +63,7 @@ export function BlankSentence({
                   onKeyDown={(e) => handleKeyDown(e, i)}
                   disabled={submitted}
                   placeholder="..."
-                  className={`inline-block w-28 rounded-lg border-2 bg-surface px-2 py-1 text-center text-sm font-medium outline-none transition-colors ${
+                  className={`inline-block w-24 rounded-lg border-2 bg-surface px-2 py-1.5 text-center text-sm font-medium outline-none transition-colors sm:w-28 sm:py-1 ${
                     submitted
                       ? results[i]
                         ? "border-green-500 bg-green-500/5"
@@ -92,7 +92,7 @@ export function BlankSentence({
       {!submitted && (
         <button
           onClick={handleSubmit}
-          className="mt-4 rounded-lg bg-obs-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-obs-600"
+          className="mt-4 rounded-lg bg-obs-500 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-obs-600 active:scale-95"
         >
           Check
         </button>

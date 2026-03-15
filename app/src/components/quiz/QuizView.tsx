@@ -45,7 +45,7 @@ export function QuizView() {
   }
 
   return (
-    <div className="px-6 py-8">
+    <div className="px-4 py-6 sm:px-6 sm:py-8">
       <AnimatePresence mode="wait">
         {finished ? (
           <QuizResult key="result" score={score} total={total} onRetry={handleRetry} />

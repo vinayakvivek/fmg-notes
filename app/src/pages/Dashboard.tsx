@@ -8,15 +8,15 @@ export function Dashboard() {
   const { getOverallPercent } = useProgress();
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">FMG Study Notes</h1>
+    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">FMG Study Notes</h1>
         <p className="mt-1 text-text-secondary">
           Select a module to start studying
         </p>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
         {modules.map((mod) => {
           const colors = moduleColors(mod.color);
           const chapterCount = mod.chapters.length;

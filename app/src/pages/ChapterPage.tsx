@@ -14,8 +14,8 @@ const tabs = [
   { path: "", icon: BookOpen, label: "Read", end: true },
   { path: "flashcards", icon: Layers, label: "Flashcards", end: false },
   { path: "quiz", icon: Brain, label: "Quiz", end: false },
-  { path: "fill-blanks", icon: PenLine, label: "Fill Blanks", end: false },
-  { path: "revision", icon: RotateCcw, label: "Revision", end: false },
+  { path: "fill-blanks", icon: PenLine, label: "Fill", end: false },
+  { path: "revision", icon: RotateCcw, label: "Revise", end: false },
 ];
 
 export interface ChapterContext {
@@ -44,13 +44,14 @@ export function ChapterPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-b border-border bg-surface-alt px-6 pt-4">
+      <div className="border-b border-border bg-surface-alt px-4 pt-3 sm:px-6 sm:pt-4">
         <Link
           to={`/module/${mod.id}`}
           className="mb-2 inline-flex items-center gap-1 text-xs text-text-secondary transition hover:text-text"
         >
           <ArrowLeft className="h-3 w-3" />
-          {mod.name}
+          <span className="hidden sm:inline">{mod.name}</span>
+          <span className="sm:hidden">{mod.shortName}</span>
         </Link>
 
         <div className="mb-3">
@@ -59,17 +60,19 @@ export function ChapterPage() {
           >
             {mod.shortName} — Ch {chapter.number}
           </span>
-          <h1 className="mt-1 text-2xl font-bold">{chapter.title}</h1>
+          <h1 className="mt-1 text-xl font-bold sm:text-2xl">
+            {chapter.title}
+          </h1>
         </div>
 
-        <div className="flex gap-1">
+        <div className="-mx-4 flex gap-0.5 overflow-x-auto px-4 sm:-mx-0 sm:gap-1 sm:px-0">
           {tabs.map(({ path, icon: Icon, label, end }) => (
             <NavLink
               key={label}
               to={path}
               end={end}
               className={({ isActive }) =>
-                `flex items-center gap-1.5 rounded-t-lg px-4 py-2 text-sm font-medium transition-colors ${
+                `flex flex-shrink-0 items-center gap-1 rounded-t-lg px-3 py-2 text-xs font-medium transition-colors sm:gap-1.5 sm:px-4 sm:text-sm ${
                   isActive
                     ? `border-b-2 ${colors.border} ${colors.activeText} bg-surface`
                     : "text-text-secondary hover:text-text"

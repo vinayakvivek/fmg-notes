@@ -59,26 +59,27 @@ export function FlashcardDeck() {
   };
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col items-center px-6 py-8">
-      <div className="mb-6 flex w-full items-center justify-between">
+    <div className="mx-auto flex max-w-2xl flex-col items-center px-4 py-6 sm:px-6 sm:py-8">
+      <div className="mb-4 flex w-full items-center justify-between sm:mb-6">
         <div>
-          <span className="text-2xl font-bold">{currentIdx + 1}</span>
+          <span className="text-xl font-bold sm:text-2xl">
+            {currentIdx + 1}
+          </span>
           <span className="text-text-secondary">/{total}</span>
-          <span className="ml-3 text-sm text-green-500">
+          <span className="ml-2 text-sm text-green-500 sm:ml-3">
             {known.size} known
           </span>
         </div>
         <button
           onClick={handleShuffle}
-          className="flex items-center gap-1.5 rounded-lg bg-surface-alt px-3 py-1.5 text-xs font-medium text-text-secondary transition hover:bg-surface-hover"
+          className="flex items-center gap-1.5 rounded-lg bg-surface-alt px-3 py-1.5 text-xs font-medium text-text-secondary transition hover:bg-surface-hover active:scale-95"
         >
           <Shuffle className="h-3.5 w-3.5" />
           Shuffle
         </button>
       </div>
 
-      {/* Progress bar */}
-      <div className="mb-6 h-1.5 w-full rounded-full bg-surface-alt">
+      <div className="mb-4 h-1.5 w-full rounded-full bg-surface-alt sm:mb-6">
         <div
           className="h-full rounded-full bg-obs-500 transition-all duration-300"
           style={{ width: `${((currentIdx + 1) / total) * 100}%` }}
@@ -103,25 +104,26 @@ export function FlashcardDeck() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="mt-6 flex items-center gap-4">
+      <div className="mt-4 flex w-full items-center justify-between sm:mt-6 sm:justify-center sm:gap-4">
         <button
           onClick={goPrev}
           disabled={currentIdx === 0}
-          className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-text-secondary transition hover:bg-surface-hover disabled:opacity-30"
+          className="flex items-center gap-1 rounded-lg px-3 py-2.5 text-sm text-text-secondary transition hover:bg-surface-hover active:scale-95 disabled:opacity-30"
         >
-          <ArrowLeft className="h-4 w-4" /> Prev
+          <ArrowLeft className="h-4 w-4" />
+          <span className="hidden sm:inline">Prev</span>
         </button>
-        <div className="flex gap-1">
+        <div className="flex max-w-[50vw] flex-wrap justify-center gap-1 sm:max-w-none">
           {cards.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentIdx(i)}
-              className={`h-2 w-2 rounded-full transition-all ${
+              className={`h-2 rounded-full transition-all ${
                 i === currentIdx
                   ? "w-6 bg-obs-500"
                   : known.has(cards[i].id)
-                    ? "bg-green-500"
-                    : "bg-border"
+                    ? "w-2 bg-green-500"
+                    : "w-2 bg-border"
               }`}
             />
           ))}
@@ -129,13 +131,14 @@ export function FlashcardDeck() {
         <button
           onClick={goNext}
           disabled={currentIdx === total - 1}
-          className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-text-secondary transition hover:bg-surface-hover disabled:opacity-30"
+          className="flex items-center gap-1 rounded-lg px-3 py-2.5 text-sm text-text-secondary transition hover:bg-surface-hover active:scale-95 disabled:opacity-30"
         >
-          Next <ArrowRight className="h-4 w-4" />
+          <span className="hidden sm:inline">Next</span>
+          <ArrowRight className="h-4 w-4" />
         </button>
       </div>
 
-      <p className="mt-4 text-xs text-text-secondary">
+      <p className="mt-3 hidden text-xs text-text-secondary sm:block">
         Use ← → arrow keys to navigate
       </p>
     </div>

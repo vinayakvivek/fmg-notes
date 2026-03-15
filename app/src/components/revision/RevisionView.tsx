@@ -54,7 +54,7 @@ export function RevisionView() {
   const isLast = currentIdx === total - 1;
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col items-center px-6 py-8">
+    <div className="mx-auto flex max-w-2xl flex-col items-center px-4 py-6 sm:px-6 sm:py-8">
       <div className="mb-4 flex w-full items-center justify-between">
         <span className="text-sm text-text-secondary">Quick Revision</span>
         <span className="text-sm font-medium">
