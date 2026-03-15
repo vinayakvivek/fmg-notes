@@ -3,7 +3,7 @@ import { AppShell } from "./components/layout/AppShell";
 import { Dashboard } from "./pages/Dashboard";
 import { ModulePage } from "./pages/ModulePage";
 import { ChapterPage } from "./pages/ChapterPage";
-import { ReaderView } from "./components/reader/ReaderView";
+import { ExploreView } from "./components/explore/ExploreView";
 import { FlashcardDeck } from "./components/flashcards/FlashcardDeck";
 import { QuizView } from "./components/quiz/QuizView";
 import { FillBlankView } from "./components/fill-blank/FillBlankView";
@@ -20,7 +20,7 @@ export default function App() {
             path="module/:moduleId/chapter/:chapterId"
             element={<ChapterPage />}
           >
-            <Route index element={<ReaderView />} />
+            <Route index element={<ExploreView />} />
             <Route path="flashcards" element={<FlashcardDeck />} />
             <Route path="quiz" element={<QuizView />} />
             <Route path="fill-blanks" element={<FillBlankView />} />

@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check, X } from "lucide-react";
+import { DifficultyBadge } from "./QuizView";
+import type { MCQ } from "../../data/types";
 
 export function QuizQuestion({
   question,
   options,
   correctIndex,
   explanation,
+  difficulty,
   onAnswer,
   questionNumber,
   total,
@@ -15,6 +18,7 @@ export function QuizQuestion({
   options: string[];
   correctIndex: number;
   explanation: string;
+  difficulty: MCQ["difficulty"];
   onAnswer: (correct: boolean) => void;
   questionNumber: number;
   total: number;
@@ -31,10 +35,13 @@ export function QuizQuestion({
   return (
     <div className="mx-auto max-w-2xl">
       <div className="mb-4 flex items-center justify-between">
-        <span className="text-sm font-medium text-text-secondary">
-          Question {questionNumber} of {total}
-        </span>
-        <div className="h-1.5 flex-1 ml-4 rounded-full bg-surface-alt">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-text-secondary">
+            Question {questionNumber} of {total}
+          </span>
+          <DifficultyBadge difficulty={difficulty} />
+        </div>
+        <div className="ml-4 h-1.5 w-24 rounded-full bg-surface-alt sm:w-40">
           <div
             className="h-full rounded-full bg-obs-500 transition-all duration-300"
             style={{ width: `${(questionNumber / total) * 100}%` }}
@@ -42,7 +49,9 @@ export function QuizQuestion({
         </div>
       </div>
 
-      <h3 className="mb-6 text-lg font-bold leading-relaxed">{question}</h3>
+      <h3 className="mb-6 whitespace-pre-line text-lg font-bold leading-relaxed">
+        {question}
+      </h3>
 
       <div className="space-y-3">
         {options.map((opt, i) => {

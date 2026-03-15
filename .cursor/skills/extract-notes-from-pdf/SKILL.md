@@ -81,8 +81,17 @@ Create `app/src/data/modules/{module_id}/chNN.ts` implementing the `Chapter` int
 
 #### Study mode data to extract:
 - **flashcards** (~15 per chapter): key facts, numbers, timings, definitions. Front = question, back = concise answer. Tag with topic keywords
-- **mcqs** (all from the PDF): exact question text, all options, correct index, explanation
+- **mcqs** (15 per chapter across 3 difficulty tiers): Each MCQ must have a `difficulty` field:
+  - `"recall"` (5): direct factual questions from the notes (e.g. "How long does spermatogenesis take?")
+  - `"clinical"` (5): clinical vignette style — present a patient scenario and ask for diagnosis, site, mechanism, or management. Start with age/gender and presenting complaint
+  - `"tricky"` (5): exam-trap questions — EXCEPT/NOT questions, assertion-reason, structure-function matching, negative questions, calculation-based. These test common confusions in FMGE exams
+  - Include all MCQs from the PDF (tagged as `"recall"`) plus write additional ones to reach 15 total
 - **fillBlanks** (~8 per chapter): derived from the PDF's blank-filling format and key facts. Use `_____` as blank placeholder
+- **matchPairs** (~8-10 per chapter): pairs of related terms for the Match Game. Derive from:
+  - Two-column tables (e.g. "Process" ↔ "Duration")
+  - Key points (label ↔ value)
+  - Structure-function relationships
+  - Each pair has `id`, `left`, and `right` string fields
 - **quickRevision** (~8 points): one-line summaries of the most important facts, using `**bold**` for key terms
 
 ### Step 6: Register the Chapter

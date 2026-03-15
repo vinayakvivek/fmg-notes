@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useParams, Navigate, Link } from "react-router-dom";
 import {
-  BookOpen,
+  Compass,
   Layers,
   Brain,
   PenLine,
@@ -11,7 +11,7 @@ import { getModule, getChapter } from "../data/modules";
 import { moduleColors } from "../utils/colors";
 
 const tabs = [
-  { path: "", icon: BookOpen, label: "Read", end: true },
+  { path: "", icon: Compass, label: "Explore", end: true },
   { path: "flashcards", icon: Layers, label: "Flashcards", end: false },
   { path: "quiz", icon: Brain, label: "Quiz", end: false },
   { path: "fill-blanks", icon: PenLine, label: "Fill", end: false },

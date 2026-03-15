@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import {
-  BookOpen,
+  Compass,
   Home,
   Layers,
   Brain,
@@ -15,7 +15,7 @@ import { useProgress } from "../../hooks/useProgress";
 import { moduleColors } from "../../utils/colors";
 
 const modeIcons = [
-  { path: "", icon: BookOpen, label: "Read" },
+  { path: "", icon: Compass, label: "Explore" },
   { path: "/flashcards", icon: Layers, label: "Flashcards" },
   { path: "/quiz", icon: Brain, label: "Quiz" },
   { path: "/fill-blanks", icon: PenLine, label: "Fill Blanks" },

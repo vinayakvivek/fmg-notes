@@ -38,12 +38,19 @@ export interface MCQ {
   options: string[];
   correctIndex: number;
   explanation: string;
+  difficulty: "recall" | "clinical" | "tricky";
 }
 
 export interface FillBlank {
   id: string;
   sentence: string;
   blanks: string[];
+}
+
+export interface MatchPair {
+  id: string;
+  left: string;
+  right: string;
 }
 
 export interface Chapter {
@@ -55,6 +62,7 @@ export interface Chapter {
   flashcards: Flashcard[];
   mcqs: MCQ[];
   fillBlanks: FillBlank[];
+  matchPairs: MatchPair[];
   quickRevision: string[];
 }
 

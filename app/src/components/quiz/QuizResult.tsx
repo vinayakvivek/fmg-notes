@@ -2,15 +2,32 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Trophy, RotateCcw } from "lucide-react";
 import confetti from "canvas-confetti";
+import type { MCQ } from "../../data/types";
+
+type Difficulty = MCQ["difficulty"];
+
+const tierLabels: Record<Difficulty, string> = {
+  recall: "Recall",
+  clinical: "Clinical",
+  tricky: "Tricky",
+};
+
+const tierColors: Record<Difficulty, string> = {
+  recall: "bg-blue-500",
+  clinical: "bg-amber-500",
+  tricky: "bg-red-500",
+};
 
 export function QuizResult({
   score,
   total,
   onRetry,
+  tierScores,
 }: {
   score: number;
   total: number;
   onRetry: () => void;
+  tierScores?: Record<Difficulty, { correct: number; total: number }>;
 }) {
   const pct = Math.round((score / total) * 100);
   const perfect = score === total;
@@ -36,6 +53,11 @@ export function QuizResult({
       frame();
     }
   }, [perfect]);
+
+  const tiers: Difficulty[] = ["recall", "clinical", "tricky"];
+  const activeTiers = tierScores
+    ? tiers.filter((t) => tierScores[t].total > 0)
+    : [];
 
   return (
     <motion.div
@@ -69,6 +91,36 @@ export function QuizResult({
               ? "Good effort. Keep studying!"
               : "Review this chapter and try again."}
       </p>
+
+      {activeTiers.length > 1 && tierScores && (
+        <div className="mt-6 w-full max-w-xs space-y-2">
+          <p className="text-center text-xs font-semibold uppercase tracking-wider text-text-secondary">
+            Breakdown by Difficulty
+          </p>
+          {activeTiers.map((tier) => {
+            const { correct, total: t } = tierScores[tier];
+            const tierPct = t > 0 ? Math.round((correct / t) * 100) : 0;
+            return (
+              <div key={tier} className="flex items-center gap-3">
+                <span className="w-16 text-xs font-medium text-text-secondary">
+                  {tierLabels[tier]}
+                </span>
+                <div className="h-2 flex-1 rounded-full bg-surface-alt">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${tierPct}%` }}
+                    transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
+                    className={`h-full rounded-full ${tierColors[tier]}`}
+                  />
+                </div>
+                <span className="w-12 text-right text-xs font-bold">
+                  {correct}/{t}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       <button
         onClick={onRetry}
