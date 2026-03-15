@@ -1,10 +1,9 @@
 import { useState, useCallback } from "react";
-import { useOutletContext } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
-import type { Chapter } from "../../data/types";
 import { useProgress } from "../../hooks/useProgress";
 import { useKeyboard } from "../../hooks/useKeyboard";
+import { useChapterContext } from "../../hooks/useChapterContext";
 
 function renderText(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -21,7 +20,7 @@ function renderText(text: string) {
 }
 
 export function RevisionView() {
-  const chapter = useOutletContext<Chapter>();
+  const { chapter, moduleId } = useChapterContext();
   const { updateChapterProgress } = useProgress();
   const [currentIdx, setCurrentIdx] = useState(0);
 
@@ -32,11 +31,11 @@ export function RevisionView() {
     setCurrentIdx((i) => {
       const next = Math.min(i + 1, total - 1);
       if (next === total - 1) {
-        updateChapterProgress(chapter.id, { revisionDone: true });
+        updateChapterProgress(moduleId, chapter.id, { revisionDone: true });
       }
       return next;
     });
-  }, [total, chapter.id, updateChapterProgress]);
+  }, [total, moduleId, chapter.id, updateChapterProgress]);
 
   const goPrev = useCallback(() => {
     setCurrentIdx((i) => Math.max(i - 1, 0));
@@ -112,7 +111,7 @@ export function RevisionView() {
         {isLast ? (
           <button
             onClick={() =>
-              updateChapterProgress(chapter.id, { revisionDone: true })
+              updateChapterProgress(moduleId, chapter.id, { revisionDone: true })
             }
             className="flex items-center gap-2 rounded-xl bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-700"
           >

@@ -1,14 +1,13 @@
 import { useState, useMemo, useCallback } from "react";
-import { useOutletContext } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Shuffle, ArrowLeft, ArrowRight } from "lucide-react";
-import type { Chapter } from "../../data/types";
 import { FlashcardItem } from "./FlashcardItem";
 import { useProgress } from "../../hooks/useProgress";
 import { useKeyboard } from "../../hooks/useKeyboard";
+import { useChapterContext } from "../../hooks/useChapterContext";
 
 export function FlashcardDeck() {
-  const chapter = useOutletContext<Chapter>();
+  const { chapter, moduleId } = useChapterContext();
   const { updateChapterProgress } = useProgress();
   const [currentIdx, setCurrentIdx] = useState(0);
   const [known, setKnown] = useState<Set<string>>(new Set());
@@ -39,7 +38,7 @@ export function FlashcardDeck() {
     const next = new Set(known);
     next.add(card.id);
     setKnown(next);
-    updateChapterProgress(chapter.id, {
+    updateChapterProgress(moduleId, chapter.id, {
       flashcardsDone: next.size,
       flashcardsTotal: total,
     });

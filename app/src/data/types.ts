@@ -50,10 +50,19 @@ export interface Chapter {
   id: string;
   number: number;
   title: string;
-  subject: "obstetrics" | "gynaecology";
+  subject?: string;
   sections: Section[];
   flashcards: Flashcard[];
   mcqs: MCQ[];
   fillBlanks: FillBlank[];
   quickRevision: string[];
+}
+
+export interface Module {
+  id: string;
+  name: string;
+  shortName: string;
+  color: string;
+  icon: string;
+  chapters: Chapter[];
 }

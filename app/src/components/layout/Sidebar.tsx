@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { NavLink, useParams } from "react-router-dom";
 import {
   BookOpen,
   Home,
@@ -6,9 +7,12 @@ import {
   Brain,
   PenLine,
   RotateCcw,
+  ChevronDown,
+  ChevronRight,
 } from "lucide-react";
-import { chapters } from "../../data/chapters";
+import { modules } from "../../data/modules";
 import { useProgress } from "../../hooks/useProgress";
+import { moduleColors } from "../../utils/colors";
 
 const modeIcons = [
   { path: "", icon: BookOpen, label: "Read" },
@@ -19,7 +23,14 @@ const modeIcons = [
 ];
 
 export function Sidebar() {
+  const { moduleId } = useParams();
   const { getOverallPercent } = useProgress();
+  const [expanded, setExpanded] = useState<Record<string, boolean>>(
+    () => Object.fromEntries(modules.map((m) => [m.id, m.id === moduleId || modules.length === 1]))
+  );
+
+  const toggle = (id: string) =>
+    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
 
   return (
     <aside className="flex h-full w-64 flex-col border-r border-border bg-surface-alt">
@@ -33,51 +44,85 @@ export function Sidebar() {
 
       <nav className="flex-1 overflow-y-auto px-2 py-3">
         <p className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-text-secondary">
-          Chapters
+          Modules
         </p>
-        {chapters.map((ch) => {
-          const pct = getOverallPercent(ch.id);
-          return (
-            <div key={ch.id} className="mb-1">
-              <NavLink
-                to={`/chapter/${ch.id}`}
-                end
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
-                    isActive
-                      ? "bg-obs-500/10 text-obs-500 font-medium"
-                      : "hover:bg-surface-hover text-text-secondary"
-                  }`
-                }
-              >
-                <span className="flex h-6 w-6 items-center justify-center rounded-md bg-obs-500/20 text-xs font-bold text-obs-600 dark:text-obs-400">
-                  {ch.number}
-                </span>
-                <span className="flex-1 truncate">{ch.title}</span>
-                {pct > 0 && (
-                  <span className="text-xs text-obs-500">{pct}%</span>
-                )}
-              </NavLink>
 
-              <div className="ml-11 mt-1 flex flex-col gap-0.5">
-                {modeIcons.map(({ path, icon: Icon, label }) => (
-                  <NavLink
-                    key={path}
-                    to={`/chapter/${ch.id}${path}`}
-                    end
-                    className={({ isActive }) =>
-                      `flex items-center gap-2 rounded-md px-2 py-1 text-xs transition-colors ${
-                        isActive
-                          ? "bg-obs-500/10 text-obs-500 font-medium"
-                          : "hover:bg-surface-hover text-text-secondary"
-                      }`
-                    }
-                  >
-                    <Icon className="h-3.5 w-3.5" />
-                    {label}
-                  </NavLink>
-                ))}
-              </div>
+        {modules.map((mod) => {
+          const colors = moduleColors(mod.color);
+          const isOpen = expanded[mod.id];
+
+          return (
+            <div key={mod.id} className="mb-2">
+              <button
+                onClick={() => toggle(mod.id)}
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition-colors hover:bg-surface-hover"
+              >
+                <span
+                  className={`flex h-6 w-6 items-center justify-center rounded-md text-[10px] font-bold ${colors.badge}`}
+                >
+                  {mod.shortName}
+                </span>
+                <span className="flex-1 truncate text-left">{mod.name}</span>
+                {isOpen ? (
+                  <ChevronDown className="h-4 w-4 text-text-secondary" />
+                ) : (
+                  <ChevronRight className="h-4 w-4 text-text-secondary" />
+                )}
+              </button>
+
+              {isOpen && (
+                <div className="ml-3 mt-1 space-y-0.5 border-l border-border pl-2">
+                  {mod.chapters.map((ch) => {
+                    const pct = getOverallPercent(mod.id, ch.id);
+                    return (
+                      <div key={ch.id}>
+                        <NavLink
+                          to={`/module/${mod.id}/chapter/${ch.id}`}
+                          end
+                          className={({ isActive }) =>
+                            `flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors ${
+                              isActive
+                                ? `${colors.activeText} ${colors.activeBg} font-medium`
+                                : "hover:bg-surface-hover text-text-secondary"
+                            }`
+                          }
+                        >
+                          <span className={`text-xs font-bold ${colors.number}`}>
+                            {ch.number}
+                          </span>
+                          <span className="flex-1 truncate">{ch.title}</span>
+                          {pct > 0 && (
+                            <span className={`text-xs ${colors.activeText}`}>
+                              {pct}%
+                            </span>
+                          )}
+                        </NavLink>
+
+                        {/* Sub-modes */}
+                        <div className="ml-6 flex flex-col gap-0.5">
+                          {modeIcons.map(({ path, icon: Icon, label }) => (
+                            <NavLink
+                              key={path}
+                              to={`/module/${mod.id}/chapter/${ch.id}${path}`}
+                              end
+                              className={({ isActive }) =>
+                                `flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] transition-colors ${
+                                  isActive
+                                    ? `${colors.activeText} ${colors.activeBg} font-medium`
+                                    : "hover:bg-surface-hover text-text-secondary"
+                                }`
+                              }
+                            >
+                              <Icon className="h-3 w-3" />
+                              {label}
+                            </NavLink>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           );
         })}

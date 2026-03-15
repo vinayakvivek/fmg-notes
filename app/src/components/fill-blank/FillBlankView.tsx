@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Flame } from "lucide-react";
-import type { Chapter } from "../../data/types";
 import { BlankSentence } from "./BlankSentence";
 import { useProgress } from "../../hooks/useProgress";
+import { useChapterContext } from "../../hooks/useChapterContext";
 
 export function FillBlankView() {
-  const chapter = useOutletContext<Chapter>();
+  const { chapter, moduleId } = useChapterContext();
   const { updateChapterProgress } = useProgress();
   const [correct, setCorrect] = useState(0);
   const [completed, setCompleted] = useState(0);
@@ -26,7 +25,7 @@ export function FillBlankView() {
     setStreak(newStreak);
     setMaxStreak((m) => Math.max(m, newStreak));
 
-    updateChapterProgress(chapter.id, {
+    updateChapterProgress(moduleId, chapter.id, {
       fillBlanksCorrect: newCorrect,
       fillBlanksTotal: total,
     });

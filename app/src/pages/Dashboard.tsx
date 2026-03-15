@@ -1,57 +1,85 @@
-import { useState } from "react";
-import { chapters } from "../data/chapters";
-import { ChapterCard } from "../components/shared/ChapterCard";
-
-type Filter = "all" | "obstetrics" | "gynaecology";
+import { Link } from "react-router-dom";
+import { BookOpen, ChevronRight } from "lucide-react";
+import { modules } from "../data/modules";
+import { moduleColors } from "../utils/colors";
+import { useProgress } from "../hooks/useProgress";
 
 export function Dashboard() {
-  const [filter, setFilter] = useState<Filter>("all");
-
-  const filtered =
-    filter === "all" ? chapters : chapters.filter((c) => c.subject === filter);
+  const { getOverallPercent } = useProgress();
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">
-          FMG Study Notes
-        </h1>
+        <h1 className="text-3xl font-bold tracking-tight">FMG Study Notes</h1>
         <p className="mt-1 text-text-secondary">
-          OBS & GYN — Dr. Gayathri MS
+          Select a module to start studying
         </p>
       </div>
 
-      <div className="mb-6 flex gap-2">
-        {(["all", "obstetrics", "gynaecology"] as Filter[]).map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium capitalize transition-colors ${
-              filter === f
-                ? f === "obstetrics"
-                  ? "bg-obs-500 text-white"
-                  : f === "gynaecology"
-                    ? "bg-gyn-500 text-white"
-                    : "bg-text text-surface"
-                : "bg-surface-alt text-text-secondary hover:bg-surface-hover"
-            }`}
-          >
-            {f}
-          </button>
-        ))}
-      </div>
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {modules.map((mod) => {
+          const colors = moduleColors(mod.color);
+          const chapterCount = mod.chapters.length;
+          const doneCount = mod.chapters.filter(
+            (ch) => getOverallPercent(mod.id, ch.id) === 100
+          ).length;
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
-        {filtered.map((ch) => (
-          <ChapterCard key={ch.id} chapter={ch} />
-        ))}
-      </div>
+          return (
+            <Link
+              key={mod.id}
+              to={`/module/${mod.id}`}
+              className={`group relative overflow-hidden rounded-2xl border border-border bg-surface-alt p-6 transition-all hover:shadow-lg hover:${colors.border}/50`}
+            >
+              <div className="flex items-start justify-between">
+                <span
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${colors.tag}`}
+                >
+                  {mod.shortName}
+                </span>
+                <ChevronRight className="h-5 w-5 text-text-secondary transition-transform group-hover:translate-x-1" />
+              </div>
 
-      {filtered.length === 0 && (
-        <p className="py-12 text-center text-text-secondary">
-          No chapters yet for this subject.
-        </p>
-      )}
+              <h2 className="mt-4 text-lg font-bold leading-tight">
+                {mod.name}
+              </h2>
+
+              <div className="mt-3 flex items-center gap-2 text-sm text-text-secondary">
+                <BookOpen className="h-4 w-4" />
+                <span>
+                  {chapterCount} chapter{chapterCount !== 1 ? "s" : ""}
+                </span>
+                {doneCount > 0 && (
+                  <span className={`ml-auto text-xs font-medium ${colors.accent}`}>
+                    {doneCount}/{chapterCount} complete
+                  </span>
+                )}
+              </div>
+
+              {/* Progress bar */}
+              <div className="mt-3 h-1.5 w-full rounded-full bg-surface-hover">
+                <div
+                  className={`h-full rounded-full ${colors.progressBar} transition-all duration-500`}
+                  style={{
+                    width: `${
+                      chapterCount > 0
+                        ? (doneCount / chapterCount) * 100
+                        : 0
+                    }%`,
+                  }}
+                />
+              </div>
+            </Link>
+          );
+        })}
+
+        {/* Placeholder for future modules */}
+        <div className="flex items-center justify-center rounded-2xl border-2 border-dashed border-border p-6 text-text-secondary">
+          <div className="text-center">
+            <p className="text-sm font-medium">More modules coming soon</p>
+            <p className="mt-1 text-xs">Surgery, Medicine, Pediatrics...</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

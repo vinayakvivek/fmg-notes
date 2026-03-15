@@ -1,12 +1,14 @@
-import { NavLink, Outlet, useParams, Navigate } from "react-router-dom";
+import { NavLink, Outlet, useParams, Navigate, Link } from "react-router-dom";
 import {
   BookOpen,
   Layers,
   Brain,
   PenLine,
   RotateCcw,
+  ArrowLeft,
 } from "lucide-react";
-import { getChapter } from "../data/chapters";
+import { getModule, getChapter } from "../data/modules";
+import { moduleColors } from "../utils/colors";
 
 const tabs = [
   { path: "", icon: BookOpen, label: "Read", end: true },
@@ -16,26 +18,46 @@ const tabs = [
   { path: "revision", icon: RotateCcw, label: "Revision", end: false },
 ];
 
+export interface ChapterContext {
+  moduleId: string;
+  chapterId: string;
+  moduleColor: string;
+}
+
 export function ChapterPage() {
-  const { id } = useParams<{ id: string }>();
-  const chapter = getChapter(id!);
+  const { moduleId, chapterId } = useParams<{
+    moduleId: string;
+    chapterId: string;
+  }>();
+  const mod = getModule(moduleId!);
+  const chapter = getChapter(moduleId!, chapterId!);
 
-  if (!chapter) return <Navigate to="/" replace />;
+  if (!mod || !chapter) return <Navigate to="/" replace />;
 
-  const isObs = chapter.subject === "obstetrics";
+  const colors = moduleColors(mod.color);
+
+  const context: ChapterContext = {
+    moduleId: mod.id,
+    chapterId: chapter.id,
+    moduleColor: mod.color,
+  };
 
   return (
     <div className="flex h-full flex-col">
       <div className="border-b border-border bg-surface-alt px-6 pt-4">
+        <Link
+          to={`/module/${mod.id}`}
+          className="mb-2 inline-flex items-center gap-1 text-xs text-text-secondary transition hover:text-text"
+        >
+          <ArrowLeft className="h-3 w-3" />
+          {mod.name}
+        </Link>
+
         <div className="mb-3">
           <span
-            className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
-              isObs
-                ? "bg-obs-500/15 text-obs-600 dark:text-obs-400"
-                : "bg-gyn-500/15 text-gyn-600 dark:text-gyn-400"
-            }`}
+            className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${colors.tag}`}
           >
-            {chapter.subject} — Ch {chapter.number}
+            {mod.shortName} — Ch {chapter.number}
           </span>
           <h1 className="mt-1 text-2xl font-bold">{chapter.title}</h1>
         </div>
@@ -49,7 +71,7 @@ export function ChapterPage() {
               className={({ isActive }) =>
                 `flex items-center gap-1.5 rounded-t-lg px-4 py-2 text-sm font-medium transition-colors ${
                   isActive
-                    ? "border-b-2 border-obs-500 text-obs-500 bg-surface"
+                    ? `border-b-2 ${colors.border} ${colors.activeText} bg-surface`
                     : "text-text-secondary hover:text-text"
                 }`
               }
@@ -62,7 +84,7 @@ export function ChapterPage() {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <Outlet context={chapter} />
+        <Outlet context={{ chapter, ...context }} />
       </div>
     </div>
   );

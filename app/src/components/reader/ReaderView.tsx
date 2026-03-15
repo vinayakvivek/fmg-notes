@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
 import { motion } from "framer-motion";
-import type { Chapter, ContentBlock } from "../../data/types";
+import type { ContentBlock } from "../../data/types";
 import { FlowchartBlock } from "./FlowchartBlock";
 import { TableBlock } from "./TableBlock";
 import { KeyPointBlock } from "./KeyPointBlock";
 import { ClinicalNote } from "./ClinicalNote";
 import { useProgress } from "../../hooks/useProgress";
+import { useChapterContext } from "../../hooks/useChapterContext";
 
 function renderText(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -57,12 +57,12 @@ function RenderBlock({ block }: { block: ContentBlock }) {
 }
 
 export function ReaderView() {
-  const chapter = useOutletContext<Chapter>();
+  const { chapter, moduleId } = useChapterContext();
   const { updateChapterProgress } = useProgress();
 
   useEffect(() => {
-    updateChapterProgress(chapter.id, { readerRead: true });
-  }, [chapter.id, updateChapterProgress]);
+    updateChapterProgress(moduleId, chapter.id, { readerRead: true });
+  }, [moduleId, chapter.id, updateChapterProgress]);
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-8">

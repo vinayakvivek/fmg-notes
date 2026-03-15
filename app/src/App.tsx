@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppShell } from "./components/layout/AppShell";
 import { Dashboard } from "./pages/Dashboard";
+import { ModulePage } from "./pages/ModulePage";
 import { ChapterPage } from "./pages/ChapterPage";
 import { ReaderView } from "./components/reader/ReaderView";
 import { FlashcardDeck } from "./components/flashcards/FlashcardDeck";
@@ -14,7 +15,11 @@ export default function App() {
       <Routes>
         <Route element={<AppShell />}>
           <Route index element={<Dashboard />} />
-          <Route path="chapter/:id" element={<ChapterPage />}>
+          <Route path="module/:moduleId" element={<ModulePage />} />
+          <Route
+            path="module/:moduleId/chapter/:chapterId"
+            element={<ChapterPage />}
+          >
             <Route index element={<ReaderView />} />
             <Route path="flashcards" element={<FlashcardDeck />} />
             <Route path="quiz" element={<QuizView />} />

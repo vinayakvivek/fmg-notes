@@ -1,10 +1,10 @@
-import type { Chapter } from "../types";
+import type { Chapter } from "../../types";
 
 const ch01: Chapter = {
   id: "ch01",
   number: 1,
   title: "Physiology of Conception",
-  subject: "obstetrics",
+  subject: "Obstetrics",
 
   sections: [
     {

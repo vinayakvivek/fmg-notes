@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import type { Chapter } from "../../data/types";
 import { QuizQuestion } from "./QuizQuestion";
 import { QuizResult } from "./QuizResult";
 import { useProgress } from "../../hooks/useProgress";
+import { useChapterContext } from "../../hooks/useChapterContext";
 
 export function QuizView() {
-  const chapter = useOutletContext<Chapter>();
+  const { chapter, moduleId } = useChapterContext();
   const { updateChapterProgress } = useProgress();
   const [currentIdx, setCurrentIdx] = useState(0);
   const [score, setScore] = useState(0);
@@ -22,7 +21,7 @@ export function QuizView() {
 
     if (currentIdx >= total - 1) {
       setFinished(true);
-      updateChapterProgress(chapter.id, {
+      updateChapterProgress(moduleId, chapter.id, {
         quizScore: newScore,
         quizTotal: total,
       });

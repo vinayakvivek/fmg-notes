@@ -13,6 +13,21 @@ interface ChapterProgress {
 
 const STORAGE_KEY = "fmg-progress";
 
+const defaultProgress: ChapterProgress = {
+  readerRead: false,
+  flashcardsDone: 0,
+  flashcardsTotal: 0,
+  quizScore: null,
+  quizTotal: 0,
+  fillBlanksCorrect: 0,
+  fillBlanksTotal: 0,
+  revisionDone: false,
+};
+
+function progressKey(moduleId: string, chapterId: string) {
+  return `${moduleId}:${chapterId}`;
+}
+
 let listeners: Array<() => void> = [];
 
 function emitChange() {
@@ -39,37 +54,18 @@ export function useProgress() {
   const data: Record<string, ChapterProgress> = JSON.parse(progress);
 
   const getChapterProgress = useCallback(
-    (chapterId: string): ChapterProgress => {
-      return (
-        data[chapterId] ?? {
-          readerRead: false,
-          flashcardsDone: 0,
-          flashcardsTotal: 0,
-          quizScore: null,
-          quizTotal: 0,
-          fillBlanksCorrect: 0,
-          fillBlanksTotal: 0,
-          revisionDone: false,
-        }
-      );
+    (moduleId: string, chapterId: string): ChapterProgress => {
+      return data[progressKey(moduleId, chapterId)] ?? { ...defaultProgress };
     },
     [data]
   );
 
   const updateChapterProgress = useCallback(
-    (chapterId: string, updates: Partial<ChapterProgress>) => {
+    (moduleId: string, chapterId: string, updates: Partial<ChapterProgress>) => {
       const current = getSnapshot();
-      const prev = current[chapterId] ?? {
-        readerRead: false,
-        flashcardsDone: 0,
-        flashcardsTotal: 0,
-        quizScore: null,
-        quizTotal: 0,
-        fillBlanksCorrect: 0,
-        fillBlanksTotal: 0,
-        revisionDone: false,
-      };
-      current[chapterId] = { ...prev, ...updates };
+      const key = progressKey(moduleId, chapterId);
+      const prev = current[key] ?? { ...defaultProgress };
+      current[key] = { ...prev, ...updates };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
       emitChange();
     },
@@ -77,10 +73,10 @@ export function useProgress() {
   );
 
   const getOverallPercent = useCallback(
-    (chapterId: string): number => {
-      const p = getChapterProgress(chapterId);
+    (moduleId: string, chapterId: string): number => {
+      const p = getChapterProgress(moduleId, chapterId);
       let score = 0;
-      let total = 5;
+      const total = 5;
       if (p.readerRead) score++;
       if (p.flashcardsTotal > 0 && p.flashcardsDone >= p.flashcardsTotal)
         score++;

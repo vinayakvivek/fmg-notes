@@ -2,10 +2,12 @@ export function ProgressRing({
   percent,
   size = 48,
   stroke = 4,
+  accentClass = "text-obs-500",
 }: {
   percent: number;
   size?: number;
   stroke?: number;
+  accentClass?: string;
 }) {
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -32,7 +34,7 @@ export function ProgressRing({
         strokeDasharray={circumference}
         strokeDashoffset={offset}
         strokeLinecap="round"
-        className="text-obs-500 transition-all duration-500"
+        className={`${accentClass} transition-all duration-500`}
       />
       <text
         x={size / 2}
