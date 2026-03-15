@@ -1,0 +1,71 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-obs-50: #fff7ed;
+  --color-obs-100: #ffedd5;
+  --color-obs-200: #fed7aa;
+  --color-obs-300: #fdba74;
+  --color-obs-400: #fb923c;
+  --color-obs-500: #f97316;
+  --color-obs-600: #ea580c;
+  --color-obs-700: #c2410c;
+  --color-obs-800: #9a3412;
+  --color-obs-900: #7c2d12;
+
+  --color-gyn-50: #f0fdfa;
+  --color-gyn-100: #ccfbf1;
+  --color-gyn-200: #99f6e4;
+  --color-gyn-300: #5eead4;
+  --color-gyn-400: #2dd4bf;
+  --color-gyn-500: #14b8a6;
+  --color-gyn-600: #0d9488;
+  --color-gyn-700: #0f766e;
+  --color-gyn-800: #115e59;
+  --color-gyn-900: #134e4a;
+
+  --color-surface: #ffffff;
+  --color-surface-alt: #f8fafc;
+  --color-surface-hover: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-text: #0f172a;
+  --color-text-secondary: #64748b;
+
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.dark {
+  --color-surface: #0f172a;
+  --color-surface-alt: #1e293b;
+  --color-surface-hover: #334155;
+  --color-border: #334155;
+  --color-text: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+}
+
+html {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
