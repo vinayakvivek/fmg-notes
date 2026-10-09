@@ -8,6 +8,7 @@ import { FlashcardDeck } from "./components/flashcards/FlashcardDeck";
 import { QuizView } from "./components/quiz/QuizView";
 import { FillBlankView } from "./components/fill-blank/FillBlankView";
 import { RevisionView } from "./components/revision/RevisionView";
+import { FacialNerveLab } from "./components/lab/FacialNerveLab";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route element={<AppShell />}>
           <Route index element={<Dashboard />} />
           <Route path="module/:moduleId" element={<ModulePage />} />
+          <Route path="lab/facial-nerve" element={<FacialNerveLab />} />
           <Route
             path="module/:moduleId/chapter/:chapterId"
             element={<ChapterPage />}

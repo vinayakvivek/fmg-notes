@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BookOpen, ChevronRight } from "lucide-react";
+import { BookOpen, ChevronRight, Scissors } from "lucide-react";
 import { modules } from "../data/modules";
 import { moduleColors } from "../utils/colors";
 import { useProgress } from "../hooks/useProgress";
@@ -71,6 +71,27 @@ export function Dashboard() {
             </Link>
           );
         })}
+
+        <Link
+          to="/lab/facial-nerve"
+          className="group relative overflow-hidden rounded-2xl border border-border bg-surface-alt p-6 transition-all hover:shadow-lg"
+        >
+          <div className="flex items-start justify-between">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+              Anatomy lab
+            </span>
+            <ChevronRight className="h-5 w-5 text-text-secondary transition-transform group-hover:translate-x-1" />
+          </div>
+
+          <h2 className="mt-4 text-lg font-bold leading-tight">
+            Facial Nerve Lesion Simulator
+          </h2>
+
+          <div className="mt-3 flex items-center gap-2 text-sm text-text-secondary">
+            <Scissors className="h-4 w-4" />
+            <span>Cut the nerve, see what is lost</span>
+          </div>
+        </Link>
 
         {/* Placeholder for future modules */}
         <div className="flex items-center justify-center rounded-2xl border-2 border-dashed border-border p-6 text-text-secondary">

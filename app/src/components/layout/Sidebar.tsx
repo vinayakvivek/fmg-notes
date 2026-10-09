@@ -9,6 +9,7 @@ import {
   RotateCcw,
   ChevronDown,
   ChevronRight,
+  Scissors,
 } from "lucide-react";
 import { modules } from "../../data/modules";
 import { useProgress } from "../../hooks/useProgress";
@@ -126,6 +127,23 @@ export function Sidebar() {
             </div>
           );
         })}
+
+        <p className="mb-2 mt-4 px-2 text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          Labs
+        </p>
+        <NavLink
+          to="/lab/facial-nerve"
+          className={({ isActive }) =>
+            `flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
+              isActive
+                ? "bg-amber-500/10 font-medium text-amber-600 dark:text-amber-400"
+                : "text-text-secondary hover:bg-surface-hover"
+            }`
+          }
+        >
+          <Scissors className="h-4 w-4" />
+          <span className="flex-1 truncate">Facial nerve lesions</span>
+        </NavLink>
       </nav>
     </aside>
   );

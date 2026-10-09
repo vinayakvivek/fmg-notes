@@ -69,3 +69,21 @@ body {
 .rotate-y-180 {
   transform: rotateY(180deg);
 }
+
+.nerve-impulse {
+  stroke-dasharray: 3 21;
+  stroke-opacity: 0.9;
+  animation: nerve-impulse 1.1s linear infinite;
+}
+
+@keyframes nerve-impulse {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nerve-impulse {
+    animation: none;
+  }
+}
